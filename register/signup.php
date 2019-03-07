@@ -2,7 +2,7 @@
 session_start();
 // バリデーション
 // 入力値が正しく設定されているか確認し、不正な場合はユーザーに再入力/再選択を促す機能
-// 何か不備があったときに内容を格納する配列
+// 何か不備があったときに内容（空欄だったよ、とか）を格納する配列
 $errors = [];
 // check.phpから「戻る」で来た場合
 if (isset($_GET['action']) && $_GET['action'] == 'rewrite') {
@@ -145,9 +145,9 @@ if (!empty($_POST)) {
                     action 送信先
                     どこにどんな方法で値を送るのかを見る
                 -->
-                <!--
+<!--
                     signup.phpで値に不備がないか確認したのちに、OKだったらcheck.phpに遷移する
-                    = 値の送信先はsignup.php
+                    = 値の送信先はsignup.php  この説明はどこのことを言っているのか？
                 -->
                 <form method="POST" action="signup.php" enctype="multipart/form-data">
                     <div class="form-group">

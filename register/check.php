@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// require(ファイル名);
+// 指定されたファイルの中身が丸々移植される。
+require('../dbconnect.php');
+
+
 // 不正遷移制御
 // signup.phpから来ていない場合、signup.phpに強制遷移させる
 if (!isset($_SESSION['51_LearnSNS'])) {
@@ -13,6 +19,29 @@ $name = $_SESSION['51_LearnSNS']['name'];
 $email = $_SESSION['51_LearnSNS']['email'];
 $password = $_SESSION['51_LearnSNS']['password'];
 $img_name = $_SESSION['51_LearnSNS']['img_name'];
+
+// ＰＯＳＴ送信時
+if(!empty($_POST)){
+    // DBへの登録処理
+    // ？に直接変数の値を入れないのはセキュリティ対策
+    // 直接入力してしまうと、データをすべて盗まれてしまう可能性などがある。
+    // タプル処理で意図しないＤＢ操作が行われないようにしている
+    // ？は事前に定められているカラムと連動している。
+    $sql = 'INSERT INTO `users` (`name`,`email`,`password`,`img_name`,`created`) VALUES (?,?,?,?,NOW())';
+    // password_hash(暗号化したい文字列、暗号化する方法);
+    // 指定された文字列をハッシュ化して暗号にする
+    $data = [$name,$email,password_hash($password,PASSWORD_DEFAULT),$img_name];
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute($data);
+
+    // セッション情報の破棄
+    // unset（配列）；
+    // 指定された配列をメモリから破棄する
+    unset($_SESSION['51_LearnSNS']);
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -50,13 +79,18 @@ $img_name = $_SESSION['51_LearnSNS']['img_name'];
                             <!-- パスワードはソーシャルハッキング対策で表示しない -->
                             <p class="lead">●●●●●●●●</p>
                         </div>
-                        <form method="POST" action="thanks.php">
+                        <form method="POST" action="check.php">
                             <!--
                                 GET送信時のパラメータ送信
                                 URL?キー=値
-                                signup.phpに「戻る」で遷移したことがわかるようにパラメータを付与している
+                                signup.phpに「戻る」で遷移したことがわかるようにパラメータ（変数）を付与している
                             -->
                             <a href="signup.php?action=rewrite" class="btn btn-default">&laquo;&nbsp;戻る</a> | 
+
+                            <!-- formタグ内に何もデータがないと、ＰＯＳＴ送信しても＄＿ＰＯＳＴが空になってしまう。
+                            if(!empty($_POST))これが使えなくなってしまう。
+                            ＰＯＳＴ送信に値を何かしら入れておきたいので、下記のinputタグを記述。 -->
+
                             <input type="hidden" name="action" value="submit">
                             <input type="submit" class="btn btn-primary" value="ユーザー登録">
                         </form>
