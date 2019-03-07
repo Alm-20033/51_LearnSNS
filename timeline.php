@@ -1,5 +1,14 @@
 <?php
 
+
+session_start();
+
+echo '<pre>';
+var_dump($_SESSION);
+echo '</pre>';
+
+
+
 ?>
 <?php include('layouts/header.php'); ?>
 <body style="margin-top: 60px; background: #E4E6EB;">

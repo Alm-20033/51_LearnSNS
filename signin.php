@@ -1,6 +1,6 @@
 <?php
 
-
+session_start();
 require'dbconnect.php';
 
 
@@ -46,9 +46,12 @@ if(!empty($_POST)){
 
         // 宿題↓の二つ
         // セッションにユーザーのＩＤを格納
-            $_SESSION['51_LearnSNS']['id'] = $id;
+            $_SESSION['51_LearnSNS']['id'] = $record['id'];
         // パスワードが正しい場合タイムライン画面に遷移
             header('Location:timeline.php');
+            exit();
+            // 画面遷移するなら、それ以降の処理を終わるというexitを書いたほうがいい。そうしないと、遷移後もプログラムの読み込みを行ってしまうため、無駄な動作になってしまう。
+            //  セッション画面
         
 
         }else{
@@ -62,6 +65,8 @@ if(!empty($_POST)){
     }
 
 }
+
+
 
 
 ?>

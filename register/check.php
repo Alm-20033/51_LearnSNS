@@ -83,7 +83,7 @@ if(!empty($_POST)){
                             <!--
                                 GET送信時のパラメータ送信
                                 URL?キー=値
-                                signup.phpに「戻る」で遷移したことがわかるようにパラメータを付与している
+                                signup.phpに「戻る」で遷移したことがわかるようにパラメータ（変数）を付与している
                             -->
                             <a href="signup.php?action=rewrite" class="btn btn-default">&laquo;&nbsp;戻る</a> | 
 
